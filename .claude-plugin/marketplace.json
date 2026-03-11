@@ -1,0 +1,22 @@
+{
+  "name": "danny-skills",
+  "owner": {
+    "name": "wxttt"
+  },
+  "metadata": {
+    "description": "Document processing skills - watermark removal and image-to-PDF combining",
+    "version": "0.0.1"
+  },
+  "plugins": [
+    {
+      "name": "document-skills",
+      "description": "Document image processing and PDF generation skills",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/remove-watermark",
+        "./skills/image-to-pdf"
+      ]
+    }
+  ]
+}
