@@ -19,10 +19,10 @@ except ImportError:
     print("Missing dependencies. Install with: pip install Pillow numpy")
     sys.exit(1)
 
-# A4 at 300 DPI
-DPI = 300
-A4_W = int(210 / 25.4 * DPI)  # 2480
-A4_H = int(297 / 25.4 * DPI)  # 3508
+def _a4_size(dpi):
+    """Calculate A4 pixel dimensions for a given DPI."""
+    return int(210 / 25.4 * dpi), int(297 / 25.4 * dpi)
+
 
 IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif", ".webp"}
 
@@ -154,7 +154,7 @@ def smart_split(img, max_h):
     return pieces
 
 
-def place_image(img, arr, page, pages, y, margin, printable_h):
+def place_image(img, arr, page, pages, y, margin, printable_h, a4_w, a4_h):
     """Place an image on pages, splitting at whitespace if it doesn't fit.
 
     Returns (page, y) for the current working page state.
@@ -175,7 +175,7 @@ def place_image(img, arr, page, pages, y, margin, printable_h):
         # Minimum useful space (~13mm at 300dpi); skip if too little
         if space < 150:
             pages.append(page)
-            page = Image.new("RGB", (A4_W, A4_H), "white")
+            page = Image.new("RGB", (a4_w, a4_h), "white")
             y = margin
             continue
 
@@ -185,7 +185,7 @@ def place_image(img, arr, page, pages, y, margin, printable_h):
         if split_y <= offset + 50:
             # No good split near the top of remaining content; start new page
             pages.append(page)
-            page = Image.new("RGB", (A4_W, A4_H), "white")
+            page = Image.new("RGB", (a4_w, a4_h), "white")
             y = margin
             continue
 
@@ -195,15 +195,16 @@ def place_image(img, arr, page, pages, y, margin, printable_h):
 
         # Move to next page for the remainder
         pages.append(page)
-        page = Image.new("RGB", (A4_W, A4_H), "white")
+        page = Image.new("RGB", (a4_w, a4_h), "white")
         y = margin
 
     return page, y
 
 
 def combine(image_files, output_path, margin, do_trim, dpi):
-    printable_w = A4_W - 2 * margin
-    printable_h = A4_H - 2 * margin
+    a4_w, a4_h = _a4_size(dpi)
+    printable_w = a4_w - 2 * margin
+    printable_h = a4_h - 2 * margin
 
     # Load, trim, scale
     scaled = []
@@ -218,12 +219,12 @@ def combine(image_files, output_path, margin, do_trim, dpi):
 
     # Pack images onto pages, splitting at whitespace when needed
     pages = []
-    page = Image.new("RGB", (A4_W, A4_H), "white")
+    page = Image.new("RGB", (a4_w, a4_h), "white")
     y = margin
 
     for img in scaled:
         arr = np.array(img)
-        page, y = place_image(img, arr, page, pages, y, margin, printable_h)
+        page, y = place_image(img, arr, page, pages, y, margin, printable_h, a4_w, a4_h)
 
     if y > margin:
         pages.append(page)

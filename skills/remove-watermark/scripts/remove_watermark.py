@@ -19,6 +19,12 @@ except ImportError:
     print("Missing dependencies. Install with: pip install Pillow numpy")
     sys.exit(1)
 
+try:
+    from scipy.ndimage import binary_dilation, gaussian_filter
+    HAS_SCIPY = True
+except ImportError:
+    HAS_SCIPY = False
+
 IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif", ".webp"}
 
 # Region presets: (y_start%, y_end%, x_start%, x_end%) as fractions of image size
@@ -133,7 +139,9 @@ def remove_watermark_full(img, threshold=180):
     3. Mid-range pixels near text -> keep; isolated mid-range -> watermark.
     4. Pixels >= threshold -> always white.
     """
-    from scipy.ndimage import binary_dilation, gaussian_filter
+    if not HAS_SCIPY:
+        print("Error: full mode requires scipy. Run with: uv run --with Pillow --with numpy --with scipy ...")
+        sys.exit(1)
 
     arr = np.array(img, dtype=np.float32)
 
