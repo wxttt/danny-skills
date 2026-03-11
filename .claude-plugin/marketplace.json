@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "Document processing skills - watermark removal and image-to-PDF combining",
-    "version": "0.0.1"
+    "version": "0.0.2"
   },
   "plugins": [
     {

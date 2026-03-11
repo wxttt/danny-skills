@@ -59,12 +59,29 @@ uv run --with Pillow --with numpy --with scipy python3 <skill-path>/scripts/remo
 
 **Custom region:** `--region "y0,y1,x0,x1"` as percentages (e.g., `"94,100,60,100"` = bottom 6%, right 40%)
 
-### Step 4: Verify Result
+### Step 4: Verify and Auto-Retry
 
-Use the Read tool to check the output image:
-- Is the watermark gone?
-- Is the text content intact?
-- If not satisfactory, adjust threshold or region and re-run.
+Use the Read tool to check the output image. You MUST verify and retry if needed — do not stop after one attempt.
+
+**Check these two things:**
+1. Is the watermark gone?
+2. Is the text content intact (not lightened or damaged)?
+
+**If watermark is still visible**, retry with adjusted parameters:
+
+| Problem | Fix |
+|---------|-----|
+| Watermark still visible | Lower the threshold (e.g., 180 → 130 → 80) |
+| Only partially removed | Expand the region (e.g., widen by 5-10% in each direction) |
+| Text got damaged/lightened | Raise the threshold or shrink the region to avoid text areas |
+| Wrong area processed | Re-examine the image and correct the region coordinates |
+
+**Retry rules:**
+- Retry up to 3 times with different parameters before giving up
+- Each retry: adjust ONE parameter at a time (threshold OR region, not both)
+- If the suggested threshold from `analyze` didn't work, try halving it
+- If threshold=50 still doesn't remove the watermark, try threshold=1 with a tighter region (the region likely has no real content, so blanking it entirely is safe)
+- After 3 failed attempts, report to the user what was tried and ask for guidance
 
 ## Command Reference
 
