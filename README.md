@@ -30,6 +30,14 @@ Combine multiple image screenshots into a paginated A4 PDF with intelligent page
 ### Via npx skills
 
 ```bash
+# Install all skills
+npx skills add wxttt/danny-skills -y
+
+# Install a single skill
+npx skills add wxttt/danny-skills --skill remove-watermark
+npx skills add wxttt/danny-skills --skill image-to-pdf
+
+# Interactive mode (select which skills to install)
 npx skills add wxttt/danny-skills
 ```
 

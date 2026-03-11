@@ -30,6 +30,14 @@ Document processing skills for Claude Code.
 ### 通过 npx skills
 
 ```bash
+# 安装所有 skill
+npx skills add wxttt/danny-skills -y
+
+# 只安装单个 skill
+npx skills add wxttt/danny-skills --skill remove-watermark
+npx skills add wxttt/danny-skills --skill image-to-pdf
+
+# 交互模式（选择要安装的 skill）
 npx skills add wxttt/danny-skills
 ```
 
