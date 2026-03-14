@@ -1,6 +1,6 @@
 # danny-skills
 
-Document processing skills for Claude Code.
+Document processing and creative animation skills for Claude Code.
 
 ## Skills
 
@@ -25,6 +25,17 @@ Combine multiple image screenshots into a paginated A4 PDF with intelligent page
 - Multiple sort modes (natural, creation time, name)
 - 300 DPI output ready for printing
 
+### particle-logo
+
+Generate a particle convergence animation video from any logo or image. 10,000 particles scatter and converge into the logo shape with synthesized music.
+
+**Features:**
+- 1080p 60fps H.264 video output (6 seconds)
+- Auto-detects background color (transparent PNG, light/dark backgrounds)
+- Synthesized build-up music with "ding" reveal
+- Customizable video size (landscape, portrait, square)
+- Requires FFmpeg
+
 ## Installation
 
 ### Via npx skills
@@ -36,6 +47,7 @@ npx skills add wxttt/danny-skills -y
 # Install a single skill
 npx skills add wxttt/danny-skills --skill remove-watermark
 npx skills add wxttt/danny-skills --skill image-to-pdf
+npx skills add wxttt/danny-skills --skill particle-logo
 
 # Interactive mode (select which skills to install)
 npx skills add wxttt/danny-skills
@@ -46,6 +58,7 @@ npx skills add wxttt/danny-skills
 ```
 /plugin marketplace add wxttt/danny-skills
 /plugin install document-skills@danny-skills
+/plugin install creative-skills@danny-skills
 ```
 
 ### Manual
@@ -55,14 +68,16 @@ Clone and copy the skill folders to `~/.claude/skills/`:
 ```bash
 cp -r skills/remove-watermark ~/.claude/skills/
 cp -r skills/image-to-pdf ~/.claude/skills/
+cp -r skills/particle-logo ~/.claude/skills/
 ```
 
 ## Dependencies
 
-Both skills use `uv run` for automatic dependency management. Required Python packages:
+All skills use `uv run` for automatic dependency management. Required Python packages:
 
 - **remove-watermark**: `Pillow`, `numpy` (+ `scipy` for full-image mode)
 - **image-to-pdf**: `Pillow`, `numpy`
+- **particle-logo**: `Pillow`, `numpy` (+ system `ffmpeg`)
 
 No manual install needed — `uv run --with ...` handles it automatically.
 
@@ -72,7 +87,8 @@ No manual install needed — `uv run --with ...` handles it automatically.
 # Natural language - Claude auto-triggers the right skill
 帮我去掉 ./source 目录下图片的水印
 把 ./images 里的截图拼成一个 PDF
-Remove the watermark from this image and combine all pages into a printable PDF
+用这个 logo 生成一个粒子汇聚动画视频
+Create a particle animation from my logo
 ```
 
 ## License

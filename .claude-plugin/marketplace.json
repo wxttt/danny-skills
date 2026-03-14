@@ -4,8 +4,8 @@
     "name": "wxttt"
   },
   "metadata": {
-    "description": "Document processing skills - watermark removal and image-to-PDF combining",
-    "version": "0.0.2"
+    "description": "Document processing and creative animation skills",
+    "version": "0.0.3"
   },
   "plugins": [
     {
@@ -16,6 +16,15 @@
       "skills": [
         "./skills/remove-watermark",
         "./skills/image-to-pdf"
+      ]
+    },
+    {
+      "name": "creative-skills",
+      "description": "Creative animation and motion graphics skills",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/particle-logo"
       ]
     }
   ]
